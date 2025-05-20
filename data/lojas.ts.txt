@@ -1,0 +1,20 @@
+export const lojas = [
+  {
+    nome: 'Loja de Celulares X',
+    cidade: 'Salvador',
+    whatsapp: '71912345678',
+    produtos: [
+      { nome: 'iPhone 13', preco: 'R$ 4.500' },
+      { nome: 'Samsung Galaxy S21', preco: 'R$ 3.200' },
+    ],
+  },
+  {
+    nome: 'Sapatos Maria',
+    cidade: 'Feira de Santana',
+    whatsapp: '75998765432',
+    produtos: [
+      { nome: 'Tênis Nike', preco: 'R$ 450' },
+      { nome: 'Salto Vermelho', preco: 'R$ 299' },
+    ],
+  },
+]
