@@ -5,11 +5,6 @@ import { cookies } from "next/headers";
 import { Database } from "@/utils/types/supabase";
 
 
-type PageProps = {
-  params: {
-    slug: string;
-  };
-};
 
 
 type LojaComProdutos = Database["public"]["Tables"]["lojas"]["Row"] & {
@@ -21,9 +16,8 @@ type LojaComProdutos = Database["public"]["Tables"]["lojas"]["Row"] & {
   }[];
 };
 
-export default async function LojaPage({ params }: PageProps) {
+export default async function LojaPage({ params }: { params: { slug: string } }) {
   const supabase = createServerComponentClient<Database>({ cookies });
-
   const { data: loja, error } = await supabase
     .from("lojas")
     .select("id, nome, slug, whatsapp, cidade, produtos (id, nome, preco, slug)")
