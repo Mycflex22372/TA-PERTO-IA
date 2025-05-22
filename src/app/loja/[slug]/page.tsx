@@ -1,7 +1,16 @@
+// src/app/loja/[slug]/page.tsx
+
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import Link from "next/link";
 import { Database } from "@/utils/types/supabase";
+
+
+type PageProps = {
+  params: {
+    slug: string;
+  };
+};
+
 
 type LojaComProdutos = Database["public"]["Tables"]["lojas"]["Row"] & {
   produtos: {
@@ -12,7 +21,7 @@ type LojaComProdutos = Database["public"]["Tables"]["lojas"]["Row"] & {
   }[];
 };
 
-export default async function LojaPage({ params }: { params: { slug: string } }) {
+export default async function LojaPage({ params }: PageProps) {
   const supabase = createServerComponentClient<Database>({ cookies });
 
   const { data: loja, error } = await supabase
@@ -42,17 +51,11 @@ export default async function LojaPage({ params }: { params: { slug: string } })
       {loja.produtos.length === 0 ? (
         <p>Nenhum produto cadastrado.</p>
       ) : (
-        <ul className="space-y-2">
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {loja.produtos.map((produto) => (
-            <li key={produto.id} className="border p-4 rounded">
-              <h3 className="text-lg font-medium">{produto.nome}</h3>
-              <p>Preço: R$ {produto.preco}</p>
-              <Link
-                href={`/produto/${produto.slug}`}
-                className="text-blue-600 underline"
-              >
-                Ver produto
-              </Link>
+            <li key={produto.id} className="border p-4 rounded shadow">
+              <h3 className="text-lg font-semibold">{produto.nome}</h3>
+              <p>Preço: R${produto.preco.toFixed(2)}</p>
             </li>
           ))}
         </ul>

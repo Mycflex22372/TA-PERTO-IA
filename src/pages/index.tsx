@@ -19,7 +19,7 @@ export default function Home() {
       </header>
 
       <p className="text-lg mt-6 mb-8 text-center text-white">
-        O que você procura em sua cidade?
+        O que você procura perto de você !!
       </p>
 
       <div className="w-full max-w-md flex gap-2">
