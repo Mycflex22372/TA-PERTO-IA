@@ -1,28 +1,15 @@
-// src/app/loja/[slug]/page.tsx
-
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { Database } from "@/utils/types/supabase";
 
-
-
-
-type LojaComProdutos = Database["public"]["Tables"]["lojas"]["Row"] & {
-  produtos: {
-    id: number;
-    nome: string;
-    preco: number;
-    slug: string;
-  }[];
-};
-
-export default async function LojaPage({ params }: { params: { slug: string } }) {
-  const supabase = createServerComponentClient<Database>({ cookies });
-  const { data: loja, error } = await supabase
+// Versão super simplificada sem tipagens complexas
+export default async function LojaPage({ params }: any) {
+  const supabase = createServerComponentClient({ cookies });
+  
+  const { data: loja } = await supabase
     .from("lojas")
     .select("id, nome, slug, whatsapp, cidade, produtos (id, nome, preco, slug)")
     .eq("slug", params.slug)
-    .single<LojaComProdutos>();
+    .single();
 
   if (!loja) {
     return <div>Loja não encontrada.</div>;
@@ -42,11 +29,11 @@ export default async function LojaPage({ params }: { params: { slug: string } })
       </a>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">Produtos disponíveis</h2>
-      {loja.produtos.length === 0 ? (
+      {loja.produtos && loja.produtos.length === 0 ? (
         <p>Nenhum produto cadastrado.</p>
-      ) : (
+       ) : (
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {loja.produtos.map((produto) => (
+          {loja.produtos && loja.produtos.map((produto: any) => (
             <li key={produto.id} className="border p-4 rounded shadow">
               <h3 className="text-lg font-semibold">{produto.nome}</h3>
               <p>Preço: R${produto.preco.toFixed(2)}</p>
@@ -57,3 +44,4 @@ export default async function LojaPage({ params }: { params: { slug: string } })
     </main>
   );
 }
+
